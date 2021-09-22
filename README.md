@@ -12,8 +12,18 @@ How to run the file:
 
 
 Route endpoints:
+
+
 ("/api/books", getAllBooks).Methods("GET")
+
+
 ("/api/book/{id}", getBook).Methods("GET")
+
+
 ("/api/book/crt", createBook).Methods("POST")
+
+
 ("/api/book/upd/{id}", updateBook).Methods("PUT")
+
+
 ("/api/book/del/{id}", deleteBook).Methods("DELETE")
