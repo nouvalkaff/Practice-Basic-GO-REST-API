@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -27,13 +26,15 @@ type Author struct {
 // Init books variable as a slice of Book struct
 var books []Book // Used inside for range iteration
 
+var x, y string = "Content-Type", "application/json"
+
 func getAllBooks(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(x, y)
 	json.NewEncoder(w).Encode(books)
 }
 
 func getBook(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(x, y)
 	params := mux.Vars(r) // Get params
 	for i, item := range books {
 		if params["id"] == item.Id {
@@ -45,7 +46,7 @@ func getBook(w http.ResponseWriter, r *http.Request){
 }
 
 func createBook(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(x, y)
 	var book Book
 	json.NewDecoder(r.Body).Decode(&book)
 	book.Id = strconv.Itoa(len(books) + 1)
@@ -54,7 +55,7 @@ func createBook(w http.ResponseWriter, r *http.Request){
 }
 
 func updateBook(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(x, y)
 	params := mux.Vars(r)
 	for i, item := range books{
 		if params["id"] == item.Id{
@@ -70,7 +71,7 @@ func updateBook(w http.ResponseWriter, r *http.Request){
 }
 
 func deleteBook(w http.ResponseWriter, r *http.Request){
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(x, y)
 	params := mux.Vars(r)
 	for i, item := range books{
 		if params["id"] == item.Id{
@@ -108,6 +109,6 @@ func main(){
 	r.HandleFunc("/api/book/del/{id}", deleteBook).Methods("DELETE")
 
 	var port string = ":1928"
-	fmt.Printf("Server running on port%v\n", port)
+	// fmt.Printf("Server running on port%v\n", port) //Must be removed during production
 	log.Fatal(http.ListenAndServe(port, r))
 }
